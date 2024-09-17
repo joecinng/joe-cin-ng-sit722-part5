@@ -17,10 +17,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE.
       - uses: actions/checkout@v3
 
-      # Expands the configuration template and deploys the microservice.
-      - name: Deploy
-        run: ./scripts/deploy.sh
-
       # Install the preferred version of Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
