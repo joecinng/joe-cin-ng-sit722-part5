@@ -40,10 +40,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE.
       - uses: actions/checkout@v3
 
+      # Make build script executable
       - name: Make build script executable
         run: chmod +x ./scripts/build-image.sh
 
-        # Install Docker Compose
+      # Install Docker Compose
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*\d')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -55,6 +56,10 @@ jobs:
       #
       - name: Build
         run: ./scripts/build-image.sh
+
+      # Make push image script executable
+      - name: Make push image script executable
+        run: chmod +x ./scripts/push-image.sh
 
       #
       # Publishes the Docker image to the container registry.
