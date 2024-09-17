@@ -1,0 +1,25 @@
+# Your Solution
+version: '3'
+services:
+
+  book_catalog:
+    image: book_catalog
+    build: 
+      context: ./book_catalog
+      dockerfile: Dockerfile
+    container_name: book_catalog
+    ports:
+      - "4001:80"
+    environment:
+      - DATABASE_URL=postgresql://joe_cin_ng_sit722_part_5_user:VAfCGzw26pLo9di8hA8Se6hdjpSEQteo@dpg-crk3fv52ng1s73foam30-a.oregon-postgres.render.com/joe_cin_ng_sit722_part_5
+
+  inventory_management:
+    image: inventory_management
+    build: 
+      context: ./inventory_management
+      dockerfile: Dockerfile
+    container_name: inventory_management
+    ports:
+      - "4002:80"
+    environment:
+      - DATABASE_URL=postgresql://joe_cin_ng_sit722_part_5_user:VAfCGzw26pLo9di8hA8Se6hdjpSEQteo@dpg-crk3fv52ng1s73foam30-a.oregon-postgres.render.com/joe_cin_ng_sit722_part_5
