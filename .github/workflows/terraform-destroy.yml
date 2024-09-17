@@ -31,3 +31,8 @@ jobs:
           cd terraform
           terraform destroy -auto-approve
         timeout-minutes: 30
+
+      - name: Terraform Refresh
+        run: |
+          cd terraform
+          terraform refresh
