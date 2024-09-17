@@ -76,6 +76,10 @@ jobs:
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG }}
           kubectl-version: v1.24.2
+
+      # Make deploy script executable
+      - name: Make push image script executable
+        run: chmod +x ./scripts/deploy.sh
       
       #
       # Expands the configuration template and deploys the microservice.
