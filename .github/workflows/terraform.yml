@@ -20,8 +20,8 @@ jobs:
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_TENANT_ID: ${{ secrets.MVP_SUBSCRIPTION }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      MVP_SUBSCRIPTION: ${{ secrets.MVP_SUBSCRIPTION }}
 
     steps:
       - uses: actions/checkout@v3
