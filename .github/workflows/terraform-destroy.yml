@@ -1,14 +1,11 @@
-name: 'Terraform Create'
+name: 'Terraform Destroy'
 
 on:
-  push:
-    paths:
-      - 'terraform/*.tf'
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual triggering from the Actions tab
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terraform Destroy'
     runs-on: ubuntu-latest
 
     env:
@@ -29,14 +26,8 @@ jobs:
           cd terraform
           terraform init  
 
-      - name: Terraform Plan
+      - name: Terraform Destroy
         run: |
           cd terraform
-          terraform plan -refresh=false
-        timeout-minutes: 30
-
-      - name: Terraform Apply
-        run: |
-          cd terraform
-          terraform apply -auto-approve
+          terraform destroy -auto-approve
         timeout-minutes: 30
