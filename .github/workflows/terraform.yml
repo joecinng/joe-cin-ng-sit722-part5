@@ -1,32 +1,26 @@
 name: 'Terraform'
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     paths:
       - 'terraform/*.tf'
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# define one job for the workflow
 jobs:
-
-  # define the os for the job to run on
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
 
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      MVP_SUBSCRIPTION: ${{ secrets.MVP_SUBSCRIPTION }}
+      TF_VAR_ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      TF_VAR_ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      TF_VAR_AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_MVP_SUBSCRIPTION: ${{ secrets.MVP_SUBSCRIPTION }}
+      TF_LOG: DEBUG
 
     steps:
       - uses: actions/checkout@v3
 
-      # Install the preferred version of Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
 
@@ -35,18 +29,14 @@ jobs:
           cd terraform
           terraform init  
 
-      - name: Terraform plan
-        env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          MVP_SUBSCRIPTION: ${{ secrets.MVP_SUBSCRIPTION }}
+      - name: Terraform Plan
         run: |
           cd terraform
-          terraform plan
+          terraform plan -refresh=false
+        timeout-minutes: 30
 
-      - name: Terraform apply
+      - name: Terraform Apply
         run: |
           cd terraform
           terraform apply -auto-approve
-
+        timeout-minutes: 30

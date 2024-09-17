@@ -22,12 +22,12 @@ variable "ARM_CLIENT_SECRET" {
   type        = string
 }
 
-variable "ARM_TENANT_ID" {
+variable "AZURE_TENANT_ID" {
   description = "The tenant ID for the Azure service principal."
   type        = string
 }
 
-variable "ARM_SUBSCRIPTION_ID" {
+variable "MVP_SUBSCRIPTION" {
   description = "The subscription ID for the Azure service principal."
   type        = string
 }
