@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: book-catalog
-        image: $CONTAINER_REGISTRY/book_catalog
+        image: sit722week9joecinng.azurecr.io/book_catalog
         ports:
         - containerPort: 80  # The port your application listens on inside the container
         env:
@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
       - name: inventory-management
-        image: $CONTAINER_REGISTRY/inventory_management
+        image: sit722week9joecinng.azurecr.io/inventory_management
         ports:
         - containerPort: 80  # The port your application listens on inside the container
         env:
