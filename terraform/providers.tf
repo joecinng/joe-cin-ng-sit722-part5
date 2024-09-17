@@ -17,20 +17,4 @@ provider "azurerm" {
   client_secret    = var.ARM_CLIENT_SECRET
   tenant_id        = var.AZURE_TENANT_ID
   subscription_id  = var.MVP_SUBSCRIPTION
-
-  variable "tenant_id" {
-    type = string
-  }
-
-  variable "client_id" {
-    type = string
-  }
-
-  variable "client_secret" {
-    type = string
-  }
-
-  variable "subscription_id" {
-    type = string
-  }
 }

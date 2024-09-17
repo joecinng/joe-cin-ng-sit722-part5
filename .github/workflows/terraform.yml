@@ -36,6 +36,11 @@ jobs:
           terraform init  
 
       - name: Terraform plan
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          MVP_SUBSCRIPTION: ${{ secrets.MVP_SUBSCRIPTION }}
         run: |
           cd terraform
           terraform plan
