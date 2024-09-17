@@ -16,3 +16,7 @@ set -u # or set -o nounset
 : "$VERSION"
 
 docker-compose build --build-arg CONTAINER_REGISTRY=$CONTAINER_REGISTRY --build-arg VERSION=$VERSION
+
+# Tag the images
+docker tag book_catalog:latest $CONTAINER_REGISTRY/book_catalog:$VERSION
+docker tag inventory_management:latest $CONTAINER_REGISTRY/inventory_management:$VERSION
