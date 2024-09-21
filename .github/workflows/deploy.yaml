@@ -9,12 +9,7 @@ name: Deploy microservice
 
 # define triggers for the workflow, with push and manually triggering
 on:
-  #
-  # Deploys the microservice on push to the main branch of this code repository.
-  #
-  push: 
-    branches:
-      - main
+
 
   #
   # Allows deployment to be invoked manually through the GitHub Actions user interface.
