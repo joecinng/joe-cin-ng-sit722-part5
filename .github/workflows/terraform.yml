@@ -6,6 +6,10 @@ on:
       - 'terraform/*.tf'
   workflow_dispatch:
 
+permissions:
+  id-token: write  # Required for OIDC authentication
+  contents: read
+
 jobs:
   terraform:
     name: 'Terraform + Deploy to AKS'
@@ -29,6 +33,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           subscription-id: ${{ secrets.MVP_SUBSCRIPTION }}
+          auth-type: secret
 
       # Fetch ACR credentials dynamically
       - name: Get ACR Credentials
