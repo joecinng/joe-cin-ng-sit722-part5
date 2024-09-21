@@ -13,7 +13,6 @@
 
 set -u # or set -o nounset
 : "$CONTAINER_REGISTRY"
-: "$VERSION"
 
 docker-compose build --build-arg CONTAINER_REGISTRY=$CONTAINER_REGISTRY
 
