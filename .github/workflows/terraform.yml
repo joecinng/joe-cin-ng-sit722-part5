@@ -33,7 +33,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           subscription-id: ${{ secrets.MVP_SUBSCRIPTION }}
-          auth-type: SERVICE_PRINCIPAL
+          auth-type: 'OIDC'
 
       # Fetch ACR credentials dynamically
       - name: Get ACR Credentials
