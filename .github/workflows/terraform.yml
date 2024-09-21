@@ -1,4 +1,4 @@
-name: 'Terraform Create'
+name: 'Terraform Create + Deploy to AKS'
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'Terraform + Deploy to AKS'
     runs-on: ubuntu-latest
 
     env:
@@ -21,6 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # Set up Terraform and initialize
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
 
@@ -40,3 +41,61 @@ jobs:
           cd terraform
           terraform apply -auto-approve
         timeout-minutes: 30
+
+      # Login to Azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      # Fetch ACR credentials dynamically
+      - name: Get ACR Credentials
+        run: |
+          CONTAINER_REGISTRY=$(az acr show --name sit722week9joecinng --query loginServer --output tsv)
+          echo "CONTAINER_REGISTRY=$CONTAINER_REGISTRY" >> $GITHUB_ENV
+
+          REGISTRY_UN=$(az acr credential show --name sit722week9joecinng --query username --output tsv)
+          REGISTRY_PW=$(az acr credential show --name sit722week9joecinng --query passwords[0].value --output tsv)
+          
+          echo "REGISTRY_UN=$REGISTRY_UN" >> $GITHUB_ENV
+          echo "REGISTRY_PW=$REGISTRY_PW" >> $GITHUB_ENV
+
+      # Make build and push scripts executable
+      - name: Make build and push scripts executable
+        run: |
+          chmod +x ./scripts/build-image.sh
+          chmod +x ./scripts/push-image.sh
+
+      # Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*\d')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
+      # Build the Docker image.
+      - name: Build Docker Image
+        run: ./scripts/build-image.sh
+
+      # Push Docker image to ACR
+      - name: Push Docker Image to ACR
+        run: ./scripts/push-image.sh
+
+      # Fetch AKS credentials dynamically
+      - name: Get AKS Credentials
+        run: |
+          az aks get-credentials --resource-group sit722week9joecinng --name sit722week9joecinng
+
+      # Deploy the application to AKS using kubectl
+      - name: Deploy to AKS
+        run: |
+          kubectl set image deployment/myapp myapp=$CONTAINER_REGISTRY/myapp:$GITHUB_SHA
+
+      # Optional: If you prefer using a deploy script
+      - name: Make deploy script executable
+        run: chmod +x ./scripts/deploy.sh
+
+      - name: Deploy via custom script
+        run: ./scripts/deploy.sh
