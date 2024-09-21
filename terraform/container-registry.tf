@@ -7,4 +7,4 @@ resource "azurerm_container_registry" "container_registry" {
   location            = var.location
   admin_enabled       = true
   sku                 = "Basic"
-} 
+}  
